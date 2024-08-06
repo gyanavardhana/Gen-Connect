@@ -1,61 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Homepage/Navbar";
-import { motion, AnimatePresence} from "framer-motion";
-import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch, FaLightbulb } from "react-icons/fa";
-
-// Example product data
-const products = [
-  {
-    id: "1",
-    name: "Laptop",
-    description:
-      "A high-performance laptop suitable for gaming and professional work.",
-    image: "https://via.placeholder.com/150",
-    attributes: {
-      warranty: "2 years",
-      ram: "16GB",
-      storage: "512GB SSD",
-      cpu: "Intel i7",
-      maintenance: [
-        { time: 1, note: "Warranty expires", ram: "14GB" },
-        { time: 2, note: "RAM decreases further", ram: "12GB" },
-      ],
-    },
-  },
-  {
-    id: "2",
-    name: "Smartphone",
-    description: "A smartphone with the latest features and high durability.",
-    image: "https://via.placeholder.com/150",
-    attributes: {
-      warranty: "1 year",
-      battery: "4000mAh",
-      storage: "128GB",
-      camera: "48MP",
-      maintenance: [
-        { time: 1, note: "Warranty expires", battery: "3800mAh" },
-        { time: 2, note: "Battery decreases further", battery: "3500mAh" },
-      ],
-    },
-  },
-  {
-    id: "3",
-    name: "Washing Machine",
-    description:
-      "A high-efficiency washing machine with multiple modes and energy saving.",
-    image: "https://via.placeholder.com/150",
-    attributes: {
-      warranty: "3 years",
-      capacity: "7kg",
-      energy_rating: "5 stars",
-      maintenance: [
-        { time: 1, note: "Warranty still valid" },
-        { time: 3, note: "Warranty expires", capacity: "6.5kg" },
-      ],
-    },
-  },
-];
+import products from "./data/products";
 
 const GenCalci = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,6 +28,12 @@ const GenCalci = () => {
     setShowTooltip(false);
   };
 
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setTimeOffset(0);
+    setShowTooltip(false);
+  };
+
   const handleTimeChange = (event) => {
     const offset = parseInt(event.target.value, 10);
     setTimeOffset(offset);
@@ -99,12 +52,30 @@ const GenCalci = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-neutral-100 min-h-screen p-8">
+      <div className="bg-neutral-100 min-h-screen p-8 flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-white rounded-lg shadow-lg p-4 mr-8">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">Products</h2>
+          <ul>
+            {products.map((product) => (
+              <motion.li
+                key={product.id}
+                className="mb-2 cursor-pointer hover:text-amber-500 transition-colors duration-200"
+                onClick={() => handleProductClick(product)}
+                whileHover={{ scale: 1.05 }}
+              >
+                {product.name}
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Main content */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8 relative"
+          className="flex-1 bg-white rounded-lg shadow-lg p-8 relative"
         >
           <h1 className="text-3xl font-bold text-gray-800 mb-6">
             GenCalci - Product Lifecycle Simulator

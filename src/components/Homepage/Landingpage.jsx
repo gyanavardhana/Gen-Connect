@@ -24,7 +24,7 @@ const LandingPage = () => {
             <p className="text-xl leading-relaxed">
               Bridge the generational gap with our cutting-edge platform. Gain deep insights into behaviors, preferences, and traits across age groups to create meaningful connections and drive your success.
             </p>
-            <Link to="/signup" className="inline-block mt-8">
+            <Link  className="inline-block mt-8">
               <button className="bg-yellow-500 text-gray-900 py-3 px-8 rounded-full text-lg font-semibold hover:bg-yellow-400 transition duration-300 transform hover:scale-105">
                 Get Started
               </button>
@@ -91,12 +91,12 @@ const LandingPage = () => {
           Harness the power of generational insights and take your strategy to the next level.
         </p>
         <div className="flex justify-center space-x-6">
-          <Link to="/signup">
+          <Link >
             <button className="bg-yellow-500 text-gray-900 py-3 px-10 rounded-full text-xl font-semibold hover:bg-yellow-400 transition duration-300 transform hover:scale-105">
               Sign Up Now
             </button>
           </Link>
-          <Link to="/learn-more">
+          <Link >
             <button className="bg-neutral-300 text-gray-900 py-3 px-10 rounded-full text-xl font-semibold hover:bg-neutral-400 transition duration-300 transform hover:scale-105">
               Learn More
             </button>
@@ -110,22 +110,22 @@ const LandingPage = () => {
           <div className="mb-8 lg:mb-0">
             <ul className="flex flex-wrap justify-center lg:justify-start space-x-6">
               <li>
-                <Link to="/about" className="hover:text-yellow-500 transition duration-300">
+                <Link  className="hover:text-yellow-500 transition duration-300">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-yellow-500 transition duration-300">
+                <Link  className="hover:text-yellow-500 transition duration-300">
                   Contact
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="hover:text-yellow-500 transition duration-300">
+                <Link  className="hover:text-yellow-500 transition duration-300">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="hover:text-yellow-500 transition duration-300">
+                <Link className="hover:text-yellow-500 transition duration-300">
                   Terms of Service
                 </Link>
               </li>

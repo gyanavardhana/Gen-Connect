@@ -1,101 +1,54 @@
-// import React, { useState, useEffect } from "react";
-// import Navbar from "../Homepage/Navbar";
-// import axios from "axios";
-// import GenerationSelector from "./GenerationSelector";
-// import CategorySection from "./CategorySection";
-// import ProductPopup from "./ProductPopup";
-
-// const GenProfile = () => {
-//   const [selectedGeneration, setSelectedGeneration] = useState("boomers");
-//   const [demoData, setDemoData] = useState([]);
-//   const [selectedProduct, setSelectedProduct] = useState(null);
-
-//   const apiUrls = {
-//     boomers: "https://fakestoreapi.com/products",
-//     millennials: "https://fakestoreapi.com/products",
-//     "gen z": "https://fakestoreapi.com/products",
-//     "gen alpha": "https://fakestoreapi.com/products",
-//   };
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const result = await axios.get(apiUrls[selectedGeneration]);
-//       setDemoData(result.data);
-//     };
-//     fetchData();
-//   }, [selectedGeneration]);
-
-//   const handleGenerationChange = (generation) => {
-//     setSelectedGeneration(generation);
-//   };
-
-//   const handleOpenPopup = (product) => {
-//     setSelectedProduct(product);
-//   };
-
-//   const handleClosePopup = () => {
-//     setSelectedProduct(null);
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-neutral-200">
-//       <Navbar />
-//       <div className="container mx-auto px-4 py-8">
-//         <GenerationSelector
-//           selectedGeneration={selectedGeneration}
-//           onGenerationChange={handleGenerationChange}
-//         />
-//         <CategorySection
-//           demoData={demoData}
-//           onOpenPopup={handleOpenPopup}
-//           selectedGeneration={selectedGeneration}
-//         />
-//       </div>
-//       <ProductPopup
-//         selectedProduct={selectedProduct}
-//         onClose={handleClosePopup}
-//       />
-//     </div>
-//   );
-// };
-
-// export default GenProfile;
-
-
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "../Homepage/Navbar";
-import axios from "axios";
 import ProductCard from "./ProductCard";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalculator, faSubscript, faHashtag, faVrCardboard, faHeart } from "@fortawesome/free-solid-svg-icons";
+
+// Import JSON data
+import boomersData from "./data/bommers.js";
+import millennialsData from "./data/millineals.js";
+import genZData from "./data/genz.js";
+import genAlphaData from "./data/genalpha.js";
 
 const GenProfile = () => {
   const [selectedGeneration, setSelectedGeneration] = useState("boomers");
   const [demoData, setDemoData] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const apiUrls = {
-    boomers: "https://fakestoreapi.com/products",
-    millennials: "https://fakestoreapi.com/products",
-    "gen z": "https://fakestoreapi.com/products",
-    "gen alpha": "https://fakestoreapi.com/products",
+  // Mapping JSON data to each generation
+  const generationData = {
+    boomers: boomersData,
+    millennials: millennialsData,
+    "gen z": genZData,
+    "gen alpha": genAlphaData,
   };
 
   const generations = ["boomers", "millennials", "gen z", "gen alpha"];
-  const categories = [
-    "electronics",
-    "jewelery",
-    "men's clothing",
-    "women's clothing",
-  ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get(apiUrls[selectedGeneration]);
-      setDemoData(result.data);
-    };
-    fetchData();
+  const categories = {
+    boomers: ["furniture", "gardening", "tools", "home decor"],
+    millennials: [
+      "home",
+      "travel",
+      "health",
+      "technology",
+      "fitness",
+    ],
+    "gen z": [
+      "lifestyle",
+      "technology",
+      "gaming",
+      "fashion",
+      "entertainment",
+    ],
+    "gen alpha": ["toys", "electronics", "learning"],
+  };
+
+  // Set demo data based on the selected generation
+  React.useEffect(() => {
+    setDemoData(generationData[selectedGeneration]);
   }, [selectedGeneration]);
 
   const handleGenerationChange = (generation) => {
@@ -158,7 +111,7 @@ const GenProfile = () => {
             Favorites
           </h2>
 
-          {categories.map((category) => (
+          {categories[selectedGeneration].map((category) => (
             <div key={category} className="mb-12">
               <h2 className="text-3xl font-bold mb-8 ml-5 text-gray-800 border-l-4 border-amber-500 pl-3">
                 {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -200,7 +153,8 @@ const GenProfile = () => {
         </motion.div>
       </div>
 
-      {/* Popup (unchanged) */}
+      {/* Popup */}
+      {/* Popup */}
       <AnimatePresence>
         {selectedProduct && (
           <motion.div
@@ -265,7 +219,50 @@ const GenProfile = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      Add to Wishlist
+                      {selectedProduct.generation === "boomers" && (
+                        <>
+                          <FontAwesomeIcon
+                            icon={faCalculator}
+                            className="mr-2"
+                          />
+                          Budget Calculator
+                        </>
+                      )}
+                      {selectedProduct.generation === "millennials" && (
+                        <>
+                          <FontAwesomeIcon
+                            icon={faSubscript}
+                            className="mr-2"
+                          />
+                          Subscription
+                        </>
+                      )}
+                      {selectedProduct.generation === "Gen Z" && (
+                        <>
+                          <FontAwesomeIcon icon={faHashtag} className="mr-2" />
+                           Hashtag Share
+                        </>
+                      )}
+                      {selectedProduct.generation === "Gen Alpha" && (
+                        <>
+                          <FontAwesomeIcon
+                            icon={faVrCardboard}
+                            className="mr-2"
+                          />
+                          AR Product View
+                        </>
+                      )}
+                      {![
+                        "boomers",
+                        "millennials",
+                        "Gen Z",
+                        "Gen Alpha",
+                      ].includes(selectedProduct.generation) && (
+                        <>
+                          <FontAwesomeIcon icon={faHeart} className="mr-2" />
+                          Add to Wishlist
+                        </>
+                      )}
                     </motion.button>
                   </div>
                 </div>
