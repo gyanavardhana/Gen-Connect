@@ -44,7 +44,7 @@ const Navbar = () => {
         <div className="flex space-x-4">
           <button
             onClick={() => {
-              navigate("/login");
+              navigate("/");
               setIsMenuOpen(false);
             }}
             className="bg-amber-500 text-white py-2 px-4 rounded-full hover:bg-amber-400 transition duration-300 mr-3"
@@ -53,7 +53,7 @@ const Navbar = () => {
           </button>
           <button
             onClick={() => {
-              navigate("/signup");
+              navigate("/");
               setIsMenuOpen(false);
             }}
             className="bg-neutral-800 text-white py-2 px-4 rounded-full hover:bg-neutral-700 transition duration-300"

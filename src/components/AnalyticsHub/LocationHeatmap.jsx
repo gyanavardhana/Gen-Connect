@@ -7,8 +7,9 @@ const LocationHeatmap = ({ data }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
 
   useEffect(() => {
-    const width = 960;
-    const height = 500;
+    // Reduce the width and height
+    const width = 800;
+    const height = 400;
     const svg = d3.select(svgRef.current)
       .attr("width", width)
       .attr("height", height)
@@ -17,19 +18,20 @@ const LocationHeatmap = ({ data }) => {
       .style("left", 0)
       .style("bottom", 0);
 
+    // Adjust the scale of the projection
     const projection = d3.geoNaturalEarth1()
-      .scale(width / 2 / Math.PI)
-      .translate([width / 2, height / 2]);
+  .scale(width / 2.1 / Math.PI)
+  .translate([width / 2, height / 2]);
 
     const path = d3.geoPath().projection(projection);
 
-    // Define colors based on unique generations
     const generations = [...new Set(data.map(d => d.generation))];
     const colors = d3.scaleOrdinal(d3.schemeCategory10).domain(generations);
     
+    // Decrease the range of the radius scale
     const radiusScale = d3.scaleSqrt()
       .domain([0, d3.max(data, d => d.count)])
-      .range([5, 25]);
+      .range([2, 12]);
 
     const zoom = d3.zoom()
       .scaleExtent([1, 8])
@@ -87,7 +89,7 @@ const LocationHeatmap = ({ data }) => {
         .attr("fill", d => colors(d.generation))
         .attr("opacity", 0.7)
         .attr("stroke", "#fff")
-        .attr("stroke-width", 1)
+        .attr("stroke-width", 0.5)
         .on("mouseover", (event, d) => {
           d3.select(event.currentTarget)
             .transition()
@@ -119,36 +121,36 @@ const LocationHeatmap = ({ data }) => {
         .ease(d3.easeBounceOut)
         .attr("r", d => radiusScale(d.count));
 
-      // Add legend
+      // Adjust legend position and size
       const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${width - 150}, ${height - 100})`);
+        .attr("transform", `translate(${width - 120}, ${height - 80})`);
 
       legend.selectAll("rect")
         .data(generations)
         .enter()
         .append("rect")
         .attr("x", 0)
-        .attr("y", (d, i) => i * 25)
-        .attr("width", 20)
-        .attr("height", 20)
+        .attr("y", (d, i) => i * 20)
+        .attr("width", 15)
+        .attr("height", 15)
         .attr("fill", d => colors(d));
 
       legend.selectAll("text")
         .data(generations)
         .enter()
         .append("text")
-        .attr("x", 30)
-        .attr("y", (d, i) => i * 25 + 15)
+        .attr("x", 20)
+        .attr("y", (d, i) => i * 20 + 12)
         .text(d => d)
-        .attr("font-size", "12px")
+        .attr("font-size", "10px")
         .attr("alignment-baseline", "middle");
 
       svg.append("text")
         .attr("x", width / 2)
-        .attr("y", 30)
+        .attr("y", 20)
         .attr("text-anchor", "middle")
-        .style("font-size", "24px")
+        .style("font-size", "18px")
         .style("font-weight", "bold")
         .text("Global Location Distribution");
     }).catch(error => {
@@ -158,13 +160,13 @@ const LocationHeatmap = ({ data }) => {
   }, [data]);
 
   return (
-    <div style={{ position: 'relative', height: '500px', width: '960px' }}>
+    <div style={{ position: 'relative', height: '400px', width: '1200px' }}>
       <svg ref={svgRef}></svg>
       {selectedLocation && (
         <div style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#f8f9fa', borderRadius: '8px', padding: '15px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', zIndex: 10 }}>
-          <h3 style={{ margin: 0, color: '#333' }}>Selected Location: <span style={{ color: '#007bff' }}>{selectedLocation.location}</span></h3>
-          <p style={{ margin: '5px 0', color: '#555' }}>Count: {selectedLocation.count}</p>
-          <p style={{ margin: '5px 0', color: '#555' }}>Generation: {selectedLocation.generation}</p>
+          <h3 style={{ margin: 0, color: '#333', fontSize: '14px' }}>Selected Location: <span style={{ color: '#007bff' }}>{selectedLocation.location}</span></h3>
+          <p style={{ margin: '5px 0', color: '#555', fontSize: '12px' }}>Count: {selectedLocation.count}</p>
+          <p style={{ margin: '5px 0', color: '#555', fontSize: '12px' }}>Generation: {selectedLocation.generation}</p>
         </div>
       )}
     </div>
